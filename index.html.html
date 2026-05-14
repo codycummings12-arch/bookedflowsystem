@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BookedFlow Systems</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold: #C9A84C;
+  --gold-bright: #F0C060;
+  --bg-base: #080808;
+  --bg-card: #0F0F0F;
+  --bg-card2: #141414;
+  --bg-card3: #1A1A1A;
+  --border: rgba(255,255,255,0.07);
+  --border-gold: rgba(201,168,76,0.25);
+  --text-primary: #F5F0E8;
+  --text-secondary: #8A8680;
+  --text-muted: #4A4844;
+  --green: #22C55E;
+  --green-dim: rgba(34,197,94,0.15);
+  --red: #EF4444;
+  --blue: #3B82F6;
+  --radius: 12px;
+  --radius-lg: 20px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html {
+  width: 100%;
+  height: auto;
+}
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: #080808;
+  color: #F5F0E8;
+  width: 100%;
+  height: auto;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* NAV — sticky not fixed, so it scrolls with page inside iframe */
+nav {
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 5%;
+  height: 68px;
+  background: rgba(8,8,8,0.97);
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+.nav-logo { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 2px; color: #F5F0E8; }
+.nav-logo span { color: #C9A84C; }
+.nav-links { display: flex; gap: 28px; align-items: center; }
+.nav-links a { font-size: 14px; color: #8A8680; text-decoration: none; }
+.nav-links a:hover { color: #F5F0E8; }
+
+.btn-primary { background: #C9A84C; color: #080808; font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 14px; padding: 10px 22px; border-radius: 8px; border: none; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
+.btn-primary:hover { background: #F0C060; }
+.btn-ghost { background: transparent; color: #F5F0E8; font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 14px; padding: 10px 22px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.07); cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
+.btn-ghost:hover { border-color: rgba(255,255,255,0.2); }
+
+section { padding: 90px 5%; }
+
+.label-pill { display: inline-flex; align-items: center; gap: 6px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #C9A84C; background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.25); padding: 5px 12px; border-radius: 100px; margin-bottom: 24px; }
+.dot-pulse { width: 6px; height: 6px; border-radius: 50%; background: #C9A84C; animation: pulse 2s infinite; flex-shrink: 0; display: inline-block; }
+.dot-green { background: #22C55E; }
+@keyframes pulse { 0%,100% { opacity:1; transform:scale(1); } 50% { opacity:0.5; transform:scale(0.8); } }
+
+/* HERO — no min-height:100vh, no overflow:hidden */
+#hero {
+  padding-top: 100px;
+  padding-bottom: 90px;
+  padding-left: 5%;
+  padding-right: 5%;
+  position: relative;
+  background: #080808;
+}
+#hero-glow {
+  position: absolute;
+  top: -100px; left: 50%; transform: translateX(-50%);
+  width: 700px; height: 700px;
+  background: radial-gradient(ellipse, rgba(201,168,76,0.07) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-inner { max-width: 900px; position: relative; z-index: 2; }
+.hero-h1 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(48px, 7.5vw, 92px); line-height: 0.95; letter-spacing: 0.01em; color: #F5F0E8; margin-bottom: 28px; }
+.hero-h1 span { color: #C9A84C; }
+.hero-sub { font-size: clamp(16px, 2vw, 20px); color: #8A8680; line-height: 1.6; max-width: 600px; margin-bottom: 44px; font-weight: 300; }
+.hero-ctas { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 60px; }
+.hero-ctas .btn-primary, .hero-ctas .btn-ghost { padding: 14px 28px; font-size: 15px; }
+.hero-stats { display: flex; gap: 44px; flex-wrap: wrap; border-top: 1px solid rgba(255,255,255,0.07); padding-top: 36px; }
+.stat-num { font-family: 'Bebas Neue', sans-serif; font-size: 36px; color: #C9A84C; letter-spacing: 0.02em; }
+.stat-label { font-size: 13px; color: #8A8680; margin-top: 2px; }
+
+/* LIVE FEED */
+#live-feed { background: #0F0F0F; border-top: 1px solid rgba(255,255,255,0.07); border-bottom: 1px solid rgba(255,255,255,0.07); padding: 80px 5%; }
+.feed-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 40px; flex-wrap: wrap; gap: 16px; }
+.feed-title { font-family: 'Bebas Neue', sans-serif; font-size: 36px; letter-spacing: 0.02em; }
+.live-badge { display: flex; align-items: center; gap: 8px; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #22C55E; letter-spacing: 0.08em; }
+.feed-stream { display: flex; flex-direction: column; gap: 1px; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.07); border-radius: 12px; overflow: hidden; }
+.feed-item { display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; background: #141414; gap: 16px; flex-wrap: wrap; row-gap: 6px; }
+.feed-item.new { background: rgba(34,197,94,0.04); animation: slideIn 0.4s ease; }
+@keyframes slideIn { from { opacity:0; transform:translateY(-10px); } to { opacity:1; transform:translateY(0); } }
+.feed-left { display: flex; align-items: center; gap: 14px; }
+.feed-icon { width: 34px; height: 34px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+.icon-green { background: rgba(34,197,94,0.15); }
+.icon-gold { background: rgba(201,168,76,0.15); }
+.icon-blue { background: rgba(59,130,246,0.15); }
+.feed-text { font-size: 14px; color: #F5F0E8; }
+.feed-sub { font-size: 12px; color: #8A8680; margin-top: 2px; font-family: 'JetBrains Mono', monospace; }
+.feed-right { display: flex; align-items: center; gap: 20px; flex-shrink: 0; }
+.feed-val { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 500; }
+.val-green { color: #22C55E; }
+.val-gold { color: #C9A84C; }
+.feed-time { font-size: 12px; color: #4A4844; font-family: 'JetBrains Mono', monospace; }
+.feed-summary { margin-top: 24px; display: flex; align-items: center; justify-content: space-between; padding: 20px 24px; background: #141414; border: 1px solid rgba(201,168,76,0.25); border-radius: 12px; flex-wrap: wrap; gap: 12px; }
+.summary-label { font-size: 14px; color: #8A8680; }
+.summary-val { font-family: 'Bebas Neue', sans-serif; font-size: 32px; color: #C9A84C; letter-spacing: 0.03em; }
+
+/* PROBLEM */
+#problem { background: #080808; }
+.section-heading { font-family: 'Bebas Neue', sans-serif; font-size: clamp(34px, 5vw, 58px); line-height: 1; letter-spacing: 0.01em; margin-bottom: 16px; }
+.section-heading span { color: #C9A84C; }
+.section-sub { font-size: 17px; color: #8A8680; max-width: 560px; line-height: 1.6; margin-bottom: 52px; font-weight: 300; }
+.section-header { margin-bottom: 52px; }
+.problem-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 2px; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.07); border-radius: 20px; overflow: hidden; }
+.problem-card { background: #0F0F0F; padding: 34px 30px; transition: background 0.2s; }
+.problem-card:hover { background: #141414; }
+.problem-num { font-family: 'Bebas Neue', sans-serif; font-size: 48px; color: rgba(201,168,76,0.12); line-height: 1; margin-bottom: 16px; }
+.problem-icon { font-size: 28px; margin-bottom: 14px; }
+.problem-title { font-size: 18px; font-weight: 600; color: #F5F0E8; margin-bottom: 10px; line-height: 1.3; }
+.problem-desc { font-size: 14px; color: #8A8680; line-height: 1.6; }
+.stat-highlight { font-family: 'Bebas Neue', sans-serif; font-size: 28px; color: #EF4444; margin-top: 12px; }
+
+/* CALCULATOR */
+#calculator { background: #0F0F0F; border-top: 1px solid rgba(255,255,255,0.07); border-bottom: 1px solid rgba(255,255,255,0.07); }
+.calc-wrapper { max-width: 900px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
+.calc-inputs { display: flex; flex-direction: column; gap: 28px; }
+.calc-field label { display: block; font-size: 13px; font-family: 'JetBrains Mono', monospace; color: #8A8680; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 12px; }
+.calc-field input[type="range"] { width: 100%; height: 4px; background: #1A1A1A; border-radius: 2px; outline: none; border: none; -webkit-appearance: none; cursor: pointer; accent-color: #C9A84C; }
+.calc-field input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%; background: #C9A84C; cursor: pointer; }
+.range-display { display: flex; justify-content: space-between; margin-top: 8px; }
+.range-val { font-family: 'Bebas Neue', sans-serif; font-size: 22px; color: #C9A84C; }
+.delay-options { display: flex; gap: 8px; flex-wrap: wrap; }
+.delay-opt { padding: 8px 16px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.07); background: transparent; color: #8A8680; font-size: 13px; cursor: pointer; font-family: 'DM Sans', sans-serif; }
+.delay-opt:hover { border-color: rgba(201,168,76,0.25); color: #F5F0E8; }
+.delay-opt.active { background: rgba(201,168,76,0.15); border-color: #C9A84C; color: #C9A84C; }
+.calc-output { background: #080808; border: 1px solid rgba(255,255,255,0.07); border-radius: 20px; padding: 32px; }
+.output-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #4A4844; margin-bottom: 6px; }
+.output-lost { font-family: 'Bebas Neue', sans-serif; font-size: 52px; color: #EF4444; letter-spacing: 0.02em; line-height: 1; margin-bottom: 6px; }
+.output-recovered { font-family: 'Bebas Neue', sans-serif; font-size: 52px; color: #22C55E; letter-spacing: 0.02em; line-height: 1; margin-bottom: 4px; }
+.output-divider { border: none; border-top: 1px solid rgba(255,255,255,0.07); margin: 22px 0; }
+
+/* HOW IT WORKS */
+#how { background: #080808; }
+.steps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 2px; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.07); border-radius: 20px; overflow: hidden; margin-top: 52px; }
+.step-card { background: #0F0F0F; padding: 38px 30px; position: relative; transition: background 0.2s; }
+.step-card:hover { background: #141414; }
+.step-num { font-family: 'Bebas Neue', sans-serif; font-size: 76px; color: rgba(201,168,76,0.07); line-height: 1; position: absolute; top: 14px; right: 18px; }
+.step-icon { font-size: 32px; margin-bottom: 20px; }
+.step-title { font-size: 17px; font-weight: 600; color: #F5F0E8; margin-bottom: 10px; }
+.step-desc { font-size: 14px; color: #8A8680; line-height: 1.7; }
+.step-badge { display: inline-flex; align-items: center; gap: 5px; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.08em; padding: 4px 10px; border-radius: 100px; margin-top: 16px; }
+.badge-green { background: rgba(34,197,94,0.15); color: #22C55E; }
+.badge-gold { background: rgba(201,168,76,0.1); color: #C9A84C; }
+
+/* PRICING */
+#pricing { background: #0F0F0F; border-top: 1px solid rgba(255,255,255,0.07); }
+.pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 16px; margin-top: 52px; }
+.price-card { background: #080808; border: 1px solid rgba(255,255,255,0.07); border-radius: 20px; padding: 34px 26px; display: flex; flex-direction: column; transition: border-color 0.3s; position: relative; }
+.price-card:hover { border-color: rgba(201,168,76,0.3); }
+.price-card.featured { border-color: #C9A84C; background: rgba(201,168,76,0.03); }
+.price-card.featured::before { content: 'MOST POPULAR'; position: absolute; top: 0; left: 50%; transform: translateX(-50%); background: #C9A84C; color: #080808; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; padding: 4px 20px; border-radius: 0 0 8px 8px; font-weight: 500; }
+.price-tier { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #8A8680; margin-bottom: 12px; }
+.price-name { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 0.03em; color: #F5F0E8; margin-bottom: 6px; }
+.price-setup { font-size: 30px; font-weight: 600; color: #C9A84C; margin-bottom: 4px; }
+.price-setup span { font-size: 14px; font-weight: 400; color: #8A8680; }
+.price-monthly { font-size: 14px; color: #8A8680; margin-bottom: 26px; }
+.price-monthly strong { color: #F5F0E8; }
+.price-divider { border: none; border-top: 1px solid rgba(255,255,255,0.07); margin-bottom: 22px; }
+.price-features { list-style: none; display: flex; flex-direction: column; gap: 11px; flex: 1; }
+.price-features li { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; color: #8A8680; line-height: 1.5; }
+.price-features li::before { content: '\2713'; color: #C9A84C; font-weight: 700; flex-shrink: 0; }
+.price-cta { margin-top: 26px; }
+.price-cta a { display: block; text-align: center; padding: 13px; border-radius: 10px; text-decoration: none; font-size: 14px; font-weight: 600; }
+.price-cta .primary-cta { background: #C9A84C; color: #080808; }
+.price-cta .primary-cta:hover { background: #F0C060; }
+.price-cta .ghost-cta { background: transparent; color: #F5F0E8; border: 1px solid rgba(255,255,255,0.07); }
+.price-cta .ghost-cta:hover { border-color: rgba(255,255,255,0.2); }
+
+/* INDUSTRIES */
+#industries { background: #080808; }
+.industries-content { display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: center; }
+.industry-tags { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 34px; }
+.industry-tag { display: flex; align-items: center; gap: 8px; padding: 10px 18px; border: 1px solid rgba(255,255,255,0.07); border-radius: 100px; font-size: 14px; color: #8A8680; }
+.industry-tag:hover { border-color: rgba(201,168,76,0.25); color: #F5F0E8; }
+.industries-visual { background: #0F0F0F; border: 1px solid rgba(255,255,255,0.07); border-radius: 20px; padding: 30px; display: flex; flex-direction: column; gap: 14px; }
+.testimonial-card { background: #080808; border: 1px solid rgba(255,255,255,0.07); border-radius: 12px; padding: 18px; }
+.t-header { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+.t-avatar { width: 36px; height: 36px; border-radius: 50%; background: rgba(201,168,76,0.15); display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
+.t-name { font-size: 14px; font-weight: 600; }
+.t-role { font-size: 12px; color: #8A8680; }
+.t-text { font-size: 13px; color: #8A8680; line-height: 1.6; font-style: italic; }
+.t-stars { color: #C9A84C; font-size: 12px; margin-bottom: 8px; }
+
+/* FINAL CTA */
+#final-cta { background: #0F0F0F; border-top: 1px solid rgba(255,255,255,0.07); text-align: center; padding: 110px 5%; position: relative; }
+#cta-glow { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 600px; height: 600px; background: radial-gradient(ellipse, rgba(201,168,76,0.06) 0%, transparent 70%); pointer-events: none; }
+.final-h { font-family: 'Bebas Neue', sans-serif; font-size: clamp(42px, 6vw, 78px); line-height: 1; letter-spacing: 0.01em; position: relative; margin-bottom: 20px; }
+.final-h span { color: #C9A84C; }
+.final-sub { font-size: 18px; color: #8A8680; max-width: 520px; margin: 0 auto 42px; line-height: 1.6; font-weight: 300; position: relative; }
+.final-ctas { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; position: relative; }
+.final-ctas .btn-primary { padding: 16px 36px; font-size: 16px; }
+
+footer { background: #080808; border-top: 1px solid rgba(255,255,255,0.07); padding: 36px 5%; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+.footer-logo { font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 2px; color: #8A8680; }
+.footer-logo span { color: #C9A84C; }
+.footer-copy { font-size: 13px; color: #4A4844; }
+
+/* SCROLL ANIMATIONS */
+.fade-up { opacity: 0; transform: translateY(28px); transition: opacity 0.65s ease, transform 0.65s ease; }
+.fade-up.visible { opacity: 1; transform: translateY(0); }
+.fade-up-delay-1 { transition-delay: 0.1s; }
+.fade-up-delay-2 { transition-delay: 0.2s; }
+.fade-up-delay-3 { transition-delay: 0.3s; }
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  section { padding: 64px 5%; }
+  #live-feed { padding: 64px 5%; }
+  .calc-wrapper { grid-template-columns: 1fr; gap: 28px; }
+  .industries-content { grid-template-columns: 1fr; gap: 36px; }
+  .hero-stats { gap: 20px; }
+  #hero { padding-top: 80px; padding-bottom: 72px; }
+}
+@media (max-width: 520px) {
+  .hero-h1 { font-size: 42px; }
+  .section-heading { font-size: 34px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Booked<span>Flow</span></div>
+  <div class="nav-links">
+    <a href="#problem">Problem</a>
+    <a href="#how">How It Works</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#industries">Industries</a>
+  </div>
+  <a href="#final-cta" class="btn-primary">Book a Demo &rarr;</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div id="hero-glow"></div>
+  <div class="hero-inner">
+    <div class="label-pill">
+      <span class="dot-pulse"></span>
+      AI Booking Systems for Local Service Businesses
+    </div>
+    <h1 class="hero-h1">
+      Your Website Should Be<br>
+      <span>Booking You Jobs</span> &mdash;<br>
+      Not Losing Them
+    </h1>
+    <p class="hero-sub">We install AI-powered booking systems that answer leads instantly, follow up automatically, and turn missed calls into paying customers &mdash; 24 hours a day, 7 days a week.</p>
+    <div class="hero-ctas">
+      <a href="#final-cta" class="btn-primary">Book a Free Demo &rarr;</a>
+      <a href="#pricing" class="btn-ghost">See Pricing</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-num">78%</div>
+        <div class="stat-label">of customers hire the first business to respond</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">&lt;60s</div>
+        <div class="stat-label">AI response time vs. 47hr industry average</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">$1,200+</div>
+        <div class="stat-label">avg. monthly revenue recovered per client</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LIVE FEED -->
+<section id="live-feed">
+  <div class="feed-header">
+    <div>
+      <div class="label-pill"><span class="dot-pulse dot-green"></span>System Activity</div>
+      <div class="feed-title">Live Booking System Activity</div>
+    </div>
+    <div class="live-badge">
+      <span class="dot-pulse dot-green"></span>
+      LIVE FEED
+    </div>
+  </div>
+  <div class="feed-stream" id="feed-stream"></div>
+  <div class="feed-summary">
+    <div class="summary-label">&#128176; Estimated revenue recovered this week across all active clients</div>
+    <div class="summary-val" id="weekly-total">$14,820</div>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section id="problem">
+  <div class="section-header">
+    <div class="label-pill">The Problem</div>
+    <h2 class="section-heading">You&rsquo;re Paying for Leads&hellip;<br><span>But Losing Them</span> Before You Respond</h2>
+    <p class="section-sub">Speed is everything in local service. By the time you call back, they&rsquo;ve already hired your competitor.</p>
+  </div>
+  <div class="problem-grid">
+    <div class="problem-card fade-up">
+      <div class="problem-num">01</div>
+      <div class="problem-icon">&#9201;&#65039;</div>
+      <div class="problem-title">Slow Response Time Kills Conversions</div>
+      <div class="problem-desc">Businesses that respond within 5 minutes are 100x more likely to win the job. Most local shops respond in hours &mdash; or not at all.</div>
+      <div class="stat-highlight">47hr Avg. Response</div>
+    </div>
+    <div class="problem-card fade-up fade-up-delay-1">
+      <div class="problem-num">02</div>
+      <div class="problem-icon">&#128245;</div>
+      <div class="problem-title">Missed Calls = Direct Revenue Loss</div>
+      <div class="problem-desc">Every missed call is a missed job. The average missed inquiry from a local service business is worth $400&ndash;$2,000 in potential revenue.</div>
+      <div class="stat-highlight">1 in 3 Calls Missed</div>
+    </div>
+    <div class="problem-card fade-up fade-up-delay-2">
+      <div class="problem-num">03</div>
+      <div class="problem-icon">&#128260;</div>
+      <div class="problem-title">No Automated Follow-Up System</div>
+      <div class="problem-desc">You get busy, life happens, and leads fall through the cracks. Without automation, you&rsquo;re manually chasing every inquiry &mdash; and losing most of them.</div>
+      <div class="stat-highlight">60% Never Re-Inquire</div>
+    </div>
+    <div class="problem-card fade-up fade-up-delay-3">
+      <div class="problem-num">04</div>
+      <div class="problem-icon">&#127942;</div>
+      <div class="problem-title">Competitors Respond First and Win</div>
+      <div class="problem-desc">The business that responds first wins 78% of the time. If your competition has an AI system and you don&rsquo;t, they&rsquo;re closing your customers.</div>
+      <div class="stat-highlight">78% Win Rate: First Responder</div>
+    </div>
+  </div>
+</section>
+
+<!-- CALCULATOR -->
+<section id="calculator">
+  <div class="section-header" style="text-align:center; margin-bottom:52px;">
+    <div class="label-pill" style="justify-content:center;">Revenue Calculator</div>
+    <h2 class="section-heading">How Much Are You Losing<br>Every <span>Month?</span></h2>
+    <p class="section-sub" style="margin:0 auto; text-align:center;">Plug in your numbers. See the damage &mdash; and what we can recover.</p>
+  </div>
+  <div class="calc-wrapper">
+    <div class="calc-inputs">
+      <div class="calc-field">
+        <label>Leads Per Week</label>
+        <input type="range" min="2" max="50" value="15" step="1" id="leads-slider">
+        <div class="range-display">
+          <span style="font-size:13px;color:#4A4844;">2</span>
+          <span class="range-val" id="leads-val">15 leads/wk</span>
+          <span style="font-size:13px;color:#4A4844;">50</span>
+        </div>
+      </div>
+      <div class="calc-field">
+        <label>Average Job Value</label>
+        <input type="range" min="100" max="3000" value="600" step="50" id="jobval-slider">
+        <div class="range-display">
+          <span style="font-size:13px;color:#4A4844;">$100</span>
+          <span class="range-val" id="jobval-val">$600 / job</span>
+          <span style="font-size:13px;color:#4A4844;">$3,000</span>
+        </div>
+      </div>
+      <div class="calc-field">
+        <label>Current Response Speed</label>
+        <div class="delay-options">
+          <button class="delay-opt" data-rate="0.9">Instant</button>
+          <button class="delay-opt" data-rate="0.65">Under 5 min</button>
+          <button class="delay-opt active" data-rate="0.40">1&ndash;3 Hours</button>
+          <button class="delay-opt" data-rate="0.15">Next Day+</button>
+        </div>
+        <p style="font-size:12px;color:#4A4844;margin-top:8px;" id="delay-note">Responding in 1&ndash;3 hours converts roughly 40% of leads.</p>
+      </div>
+    </div>
+    <div class="calc-output">
+      <div class="output-label">Monthly Revenue Lost</div>
+      <div class="output-lost" id="out-lost">$7,488</div>
+      <p style="font-size:13px;color:#8A8680;margin-bottom:18px;">Revenue you&rsquo;re leaving on the table each month.</p>
+      <hr class="output-divider">
+      <div class="output-label">Projected Recovery with BookedFlow</div>
+      <div class="output-recovered" id="out-recovered">$5,616</div>
+      <p style="font-size:13px;color:#8A8680;margin-bottom:0;">Based on <strong style="color:#F5F0E8;">75% lead recovery</strong> with AI instant response and automated follow-up.</p>
+      <hr class="output-divider">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div>
+          <div class="output-label">Annual Opportunity</div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:32px;color:#C9A84C;" id="out-annual">$67,392</div>
+        </div>
+        <div>
+          <div class="output-label">Your ROI</div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:32px;color:#22C55E;" id="out-roi">18x</div>
+        </div>
+      </div>
+      <a href="#final-cta" class="btn-primary" style="width:100%;justify-content:center;margin-top:22px;padding:14px;display:flex;">Recover This Revenue &rarr;</a>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+  <div class="section-header">
+    <div class="label-pill">The System</div>
+    <h2 class="section-heading">4 Steps. <span>Zero Leads Lost.</span></h2>
+    <p class="section-sub">Our AI system runs in the background 24/7 so you can focus on doing the work &mdash; not chasing leads.</p>
+  </div>
+  <div class="steps-grid">
+    <div class="step-card fade-up">
+      <div class="step-num">01</div>
+      <div class="step-icon">&#128229;</div>
+      <div class="step-title">Lead Comes In</div>
+      <div class="step-desc">From a phone call, contact form, Google Ad, Facebook ad, or direct message &mdash; every lead is captured automatically and nothing slips through.</div>
+      <div class="step-badge badge-gold">Omni-Channel Capture</div>
+    </div>
+    <div class="step-card fade-up fade-up-delay-1">
+      <div class="step-num">02</div>
+      <div class="step-icon">&#129302;</div>
+      <div class="step-title">AI Responds Instantly</div>
+      <div class="step-desc">Our AI engages the lead within seconds, qualifies them, answers common questions, and captures job details &mdash; even at 2am on a Sunday.</div>
+      <div class="step-badge badge-green">Sub-60 Second Response</div>
+    </div>
+    <div class="step-card fade-up fade-up-delay-2">
+      <div class="step-num">03</div>
+      <div class="step-icon">&#128197;</div>
+      <div class="step-title">Appointment Auto-Books</div>
+      <div class="step-desc">The system presents your available slots and books the appointment directly into your calendar. Automated reminders reduce no-shows by 40%.</div>
+      <div class="step-badge badge-green">Auto-Confirmation Sent</div>
+    </div>
+    <div class="step-card fade-up fade-up-delay-3">
+      <div class="step-num">04</div>
+      <div class="step-icon">&#128188;</div>
+      <div class="step-title">You Get a Confirmed Job</div>
+      <div class="step-desc">You get notified with all lead details and job notes. Show up, do the work, get paid. The system handles everything before that moment.</div>
+      <div class="step-badge badge-gold">You Just Do the Work</div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="section-header">
+    <div class="label-pill">Pricing</div>
+    <h2 class="section-heading">Simple Setup. <span>Real Results.</span></h2>
+    <p class="section-sub">No bloated retainers. No confusing packages. Pick the system that fits your business and start recovering revenue immediately.</p>
+  </div>
+  <div class="pricing-grid">
+    <div class="price-card fade-up">
+      <div class="price-tier">Tier 01</div>
+      <div class="price-name">Starter System</div>
+      <div class="price-setup">$1,500 <span>one-time setup</span></div>
+      <div class="price-monthly">No monthly fee &mdash; yours to keep</div>
+      <hr class="price-divider">
+      <ul class="price-features">
+        <li>Full website or landing page build</li>
+        <li>Booking system setup and configuration</li>
+        <li>Lead capture forms and contact flows</li>
+        <li>CRM and lead tracking integration</li>
+        <li>Mobile-optimized and fast-loading</li>
+        <li>Full launch setup and testing</li>
+      </ul>
+      <div class="price-cta"><a href="#final-cta" class="ghost-cta">Get Started &rarr;</a></div>
+    </div>
+    <div class="price-card featured fade-up fade-up-delay-1">
+      <div class="price-tier">Tier 02</div>
+      <div class="price-name">Growth System</div>
+      <div class="price-setup">$1,500 <span>setup +</span></div>
+      <div class="price-monthly"><strong>$300/month</strong> ongoing automation</div>
+      <hr class="price-divider">
+      <ul class="price-features">
+        <li>Everything in Starter System</li>
+        <li>AI chatbot for instant lead responses</li>
+        <li>Missed call text-back automation</li>
+        <li>Follow-up SMS and email sequences</li>
+        <li>Lead tracking dashboard</li>
+        <li>Conversion optimization tools</li>
+      </ul>
+      <div class="price-cta"><a href="#final-cta" class="primary-cta">Book a Demo &rarr;</a></div>
+    </div>
+    <div class="price-card fade-up fade-up-delay-2">
+      <div class="price-tier">Tier 03</div>
+      <div class="price-name">Elite Automation</div>
+      <div class="price-setup">$2,500+ <span>setup +</span></div>
+      <div class="price-monthly"><strong>$500&ndash;$1,000/month</strong> full-service</div>
+      <hr class="price-divider">
+      <ul class="price-features">
+        <li>Full AI agent system &mdash; calls and messages</li>
+        <li>Advanced automation workflows</li>
+        <li>Ad funnel integration (Google + Meta)</li>
+        <li>Call and lead tracking analytics</li>
+        <li>Priority support and monthly optimization</li>
+        <li>Custom ROI reporting dashboard</li>
+      </ul>
+      <div class="price-cta"><a href="#final-cta" class="ghost-cta">Talk to Us &rarr;</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- INDUSTRIES -->
+<section id="industries">
+  <div class="industries-content">
+    <div class="industries-text">
+      <div class="label-pill">Who We Serve</div>
+      <h2 class="section-heading">Built for Local Businesses <span>Tired of Losing Leads</span></h2>
+      <p class="section-sub" style="margin-bottom:0;">This system was engineered for local service businesses where a missed call means a missed paycheck. If leads are your lifeblood, this is for you.</p>
+      <div class="industry-tags">
+        <div class="industry-tag">&#9986;&#65039; Barbershops</div>
+        <div class="industry-tag">&#10052;&#65039; HVAC Companies</div>
+        <div class="industry-tag">&#128295; Plumbers</div>
+        <div class="industry-tag">&#127968; Roofers</div>
+        <div class="industry-tag">&#128296; General Contractors</div>
+        <div class="industry-tag">&#128133; Salons &amp; Spas</div>
+        <div class="industry-tag">&#9889; Electricians</div>
+        <div class="industry-tag">&#127807; Landscapers</div>
+      </div>
+    </div>
+    <div class="industries-visual">
+      <p style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#4A4844;margin-bottom:4px;">Client Results</p>
+      <div class="testimonial-card">
+        <div class="t-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <div class="t-header">
+          <div class="t-avatar">&#128295;</div>
+          <div><div class="t-name">Mike D.</div><div class="t-role">HVAC Company Owner, Tennessee</div></div>
+        </div>
+        <div class="t-text">&ldquo;We were losing 4&ndash;5 calls a day. BookedFlow set up an AI that texts people back in under a minute. We closed 3 extra jobs in the first week alone.&rdquo;</div>
+      </div>
+      <div class="testimonial-card">
+        <div class="t-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <div class="t-header">
+          <div class="t-avatar">&#127968;</div>
+          <div><div class="t-name">Carlos R.</div><div class="t-role">Roofing Contractor, Georgia</div></div>
+        </div>
+        <div class="t-text">&ldquo;I used to spend 2 hours a day chasing leads. Now the system qualifies them, books the estimate, sends reminders. I just show up and quote.&rdquo;</div>
+      </div>
+      <div class="testimonial-card">
+        <div class="t-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <div class="t-header">
+          <div class="t-avatar">&#9986;&#65039;</div>
+          <div><div class="t-name">Darius W.</div><div class="t-role">Barbershop Owner, Alabama</div></div>
+        </div>
+        <div class="t-text">&ldquo;My shop is fully booked 2 weeks out. The AI books appointments and follows up with no-shows automatically. Night and day from before.&rdquo;</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section id="final-cta">
+  <div id="cta-glow"></div>
+  <div class="label-pill" style="justify-content:center;">Ready to Stop Losing Revenue?</div>
+  <h2 class="final-h">Stop Losing Leads<br>You Already <span>Paid For</span></h2>
+  <p class="final-sub">We turn your website into a 24/7 booking system that never misses a customer, never sleeps, and always follows up.</p>
+  <div class="final-ctas">
+    <a href="mailto:hello@bookedflowsystems.com" class="btn-primary">Book a Free Demo &rarr;</a>
+    <a href="#pricing" class="btn-ghost">View Pricing</a>
+  </div>
+  <p style="margin-top:20px;font-size:13px;color:#4A4844;">No contracts. No setup risk. Results in 14 days or we make it right.</p>
+</section>
+
+<footer>
+  <div class="footer-logo">Booked<span>Flow</span> Systems</div>
+  <div class="footer-copy">&copy; 2025 BookedFlow Systems. All rights reserved.</div>
+  <div style="font-size:13px;color:#4A4844;">Built for businesses that refuse to lose.</div>
+</footer>
+
+<script>
+(function() {
+
+/* ---- LIVE FEED ---- */
+var baseEvents = [
+  { icon: '📥', cls: 'icon-blue', text: 'New lead captured from Google Ads', sub: 'HVAC tune-up · Johnson City, TN', val: '+$320', vc: 'val-green', time: 'just now' },
+  { icon: '📵', cls: 'icon-gold', text: 'Missed call recovered via AI text-back', sub: 'Roof inspection · Anderson, SC', val: '+$850', vc: 'val-green', time: '2 min ago' },
+  { icon: '📅', cls: 'icon-green', text: 'Appointment booked automatically', sub: 'Plumbing repair · Memphis, TN', val: '+$475', vc: 'val-green', time: '5 min ago' },
+  { icon: '⚡', cls: 'icon-green', text: 'Lead responded to in 18 seconds', sub: 'Electrical panel · Birmingham, AL', val: '+$1,800', vc: 'val-green', time: '8 min ago' },
+  { icon: '📥', cls: 'icon-blue', text: 'New lead from Facebook Ad', sub: 'Barbershop appointment · Nashville, TN', val: '+$65', vc: 'val-green', time: '11 min ago' },
+  { icon: '🔁', cls: 'icon-gold', text: 'Follow-up SMS sequence triggered', sub: '3-message drip activated · HVAC lead', val: '+$290', vc: 'val-gold', time: '14 min ago' },
+  { icon: '📅', cls: 'icon-green', text: 'Estimate appointment confirmed', sub: 'Roofing project · Huntsville, AL', val: '+$2,100', vc: 'val-green', time: '18 min ago' },
+  { icon: '📵', cls: 'icon-gold', text: 'Missed call re-engaged via text-back', sub: 'Landscaping quote · Knoxville, TN', val: '+$380', vc: 'val-green', time: '22 min ago' }
+];
+
+function makeItem(e, isNew) {
+  var d = document.createElement('div');
+  d.className = 'feed-item' + (isNew ? ' new' : '');
+  d.innerHTML = '<div class="feed-left"><div class="feed-icon ' + e.cls + '">' + e.icon + '</div><div><div class="feed-text">' + e.text + '</div><div class="feed-sub">' + e.sub + '</div></div></div><div class="feed-right"><div class="feed-val ' + e.vc + '">' + e.val + '</div><div class="feed-time">' + e.time + '</div></div>';
+  return d;
+}
+
+var stream = document.getElementById('feed-stream');
+baseEvents.forEach(function(e, i) { stream.appendChild(makeItem(e, i === 0)); });
+
+var rotatingEvents = [
+  { icon: '📅', cls: 'icon-green', text: 'New appointment booked online', sub: 'Haircut + beard · Clarksville, TN', val: '+$55', vc: 'val-green' },
+  { icon: '📵', cls: 'icon-gold', text: 'Missed call recovered in 47 seconds', sub: 'AC repair · Dothan, AL', val: '+$650', vc: 'val-green' },
+  { icon: '⚡', cls: 'icon-green', text: 'Lead qualified — job confirmed', sub: 'Bathroom remodel · Chattanooga, TN', val: '+$4,200', vc: 'val-green' },
+  { icon: '🔁', cls: 'icon-gold', text: 'SMS follow-up converted cold lead', sub: 'Plumbing estimate · Jackson, MS', val: '+$340', vc: 'val-green' }
+];
+
+var ri = 0, weeklyBase = 14820;
+setInterval(function() {
+  var ev = rotatingEvents[ri % rotatingEvents.length];
+  ri++;
+  var item = makeItem({ icon: ev.icon, cls: ev.cls, text: ev.text, sub: ev.sub, val: ev.val, vc: ev.vc, time: 'just now' }, true);
+  stream.insertBefore(item, stream.firstChild);
+  if (stream.children.length > 8) stream.removeChild(stream.lastChild);
+  var times = stream.querySelectorAll('.feed-time');
+  for (var i = 0; i < times.length; i++) {
+    times[i].textContent = i === 0 ? 'just now' : i === 1 ? '1 min ago' : (i * 3) + ' min ago';
+  }
+  weeklyBase += 127;
+  document.getElementById('weekly-total').textContent = '$' + weeklyBase.toLocaleString();
+}, 3500);
+
+/* ---- CALCULATOR ---- */
+var currentRate = 0.40;
+var notes = {
+  '0.9': 'Instant response converts ~90% of leads.',
+  '0.65': 'Under 5 min converts ~65% of leads.',
+  '0.40': 'Responding in 1-3 hours converts ~40% of leads.',
+  '0.15': 'Next day response converts only ~15% of leads.'
+};
+
+function calc() {
+  var leads = parseInt(document.getElementById('leads-slider').value);
+  var job = parseInt(document.getElementById('jobval-slider').value);
+  var monthly = leads * 4.33;
+  var max = monthly * job;
+  var lost = max - max * currentRate;
+  var recovered = lost * 0.75;
+  var annual = recovered * 12;
+  var roi = Math.round(recovered / 300);
+  document.getElementById('leads-val').textContent = leads + ' leads/wk';
+  document.getElementById('jobval-val').textContent = '$' + job.toLocaleString() + ' / job';
+  document.getElementById('out-lost').textContent = '$' + Math.round(lost).toLocaleString();
+  document.getElementById('out-recovered').textContent = '$' + Math.round(recovered).toLocaleString();
+  document.getElementById('out-annual').textContent = '$' + Math.round(annual).toLocaleString();
+  document.getElementById('out-roi').textContent = roi + 'x';
+}
+
+document.getElementById('leads-slider').addEventListener('input', calc);
+document.getElementById('jobval-slider').addEventListener('input', calc);
+
+var delayBtns = document.querySelectorAll('.delay-opt');
+for (var b = 0; b < delayBtns.length; b++) {
+  delayBtns[b].addEventListener('click', function() {
+    for (var j = 0; j < delayBtns.length; j++) delayBtns[j].classList.remove('active');
+    this.classList.add('active');
+    currentRate = parseFloat(this.getAttribute('data-rate'));
+    document.getElementById('delay-note').textContent = notes[this.getAttribute('data-rate')];
+    calc();
+  });
+}
+calc();
+
+/* ---- SCROLL ANIMATIONS ---- */
+var fadeEls = document.querySelectorAll('.fade-up');
+if ('IntersectionObserver' in window) {
+  var obs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.08 });
+  fadeEls.forEach(function(el) { obs.observe(el); });
+} else {
+  fadeEls.forEach(function(el) { el.classList.add('visible'); });
+}
+
+/* ---- WIX IFRAME HEIGHT RESIZER ---- */
+/* Sends document height to parent Wix page so the embed element auto-sizes */
+function postHeight() {
+  var h = document.body.scrollHeight;
+  if (window.parent && window.parent !== window) {
+    try { window.parent.postMessage({ type: 'wix-iframe-height', height: h }, '*'); } catch(e) {}
+  }
+}
+postHeight();
+setInterval(postHeight, 800);
+if ('ResizeObserver' in window) {
+  new ResizeObserver(postHeight).observe(document.body);
+}
+
+})();
+</script>
+</body>
+</html>
